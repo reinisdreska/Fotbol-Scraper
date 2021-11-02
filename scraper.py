@@ -29,6 +29,8 @@ def info(datne):
 
     galvena = base.find_all("tr")
     
+    menesi = {"jan": 1, "feb":2, "mar":3, "apr":4, "mai":5, "jūn":6, "jūl":7, "aug":8, "sep":9, "okt":10, "nov":11, "dec":12}
+    
 
     for row in galvena:
         spele = {}
@@ -41,10 +43,8 @@ def info(datne):
         spele["menesis"] = spele["menesis"][5:- 6]
         if spele["menesis"] == "kārta":
             continue
-        menesi = ["jan", "feb", "mar", "apr", "mai", "jun", "jūl", "aug", "sep","nov", "dec"]
-        for menesis in range(1, len(menesi)+1):
-            spele["menesis"] = menesis
-            print(spele["menesis"])
+        spele["menesis"] = menesi.get(spele["menesis"])
+        print(spele["menesis"])
 
         tags = row.find_all("h5")
         if not tags:
