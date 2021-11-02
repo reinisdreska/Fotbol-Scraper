@@ -31,23 +31,35 @@ def info(datne):
     galvena = base.find_all("tr")
     
 
-    # print(galvena)
-    # for i in range(1, len(galvena)):
-    #     print("==========================")
-    #     print(i, galvena[i].get_text())
-    # print("==========================")
-
-    
-
     for row in galvena:
         spele = {}
+
+        tags = row.find_all("h6")
+        if not tags:
+            continue
+        spele["menesis"] = tags
+        spele["menesis"] = str(spele["menesis"])
+        size = len(spele["menesis"])
+        spele["menesis"] = spele["menesis"][5:size - 6]
+        #print(spele["menesis"])
+
+        tags = row.find_all("h5")
+        if not tags:
+            continue
+        spele["diena"] = tags
+        spele["diena"] = str(spele["diena"])
+        size = len(spele["diena"])
+        spele["diena"] = spele["diena"][5:size - 6]
+        #print(spele["diena"])
+
         tags = row.find_all("div", class_="stadium")
         if not tags:
             continue
         spele["arena"] = tags
-        spele["arena"] =str(spele["arena"])
+        spele["arena"] = str(spele["arena"])
         size = len(spele["arena"])
         spele["arena"] = spele["arena"][22:size - 7]
-        print(spele["arena"])
+        #print(spele["arena"])
+        
 
 info(f"lapas/1_lapa.html")
