@@ -44,7 +44,8 @@ def info(datne):
         if spele["menesis"] == "kārta":
             continue
         spele["menesis"] = menesi.get(spele["menesis"])
-        print(spele["menesis"])
+        spele["menesis"] = str(spele["menesis"])
+        print("Spēles mēnesis: " + spele["menesis"])
 
         tags = row.find_all("h5")
         if not tags:
@@ -52,7 +53,7 @@ def info(datne):
         spele["diena"] = tags
         spele["diena"] = str(spele["diena"])
         spele["diena"] = spele["diena"][5: - 6]
-        #print(spele["diena"])
+        print("Spēles datums: " + spele["diena"])
 
         tags = row.find_all("div", class_="time")
         if not tags:
@@ -60,7 +61,7 @@ def info(datne):
         spele["laiks"] = tags
         spele["laiks"] = str(spele["laiks"])
         spele["laiks"] = spele["laiks"][19:- 7]
-        #print(spele["laiks"])
+        print("Spēles laiks: " + spele["laiks"])
 
         # print('Timestamp: {:%m-%d}'.format(datetime.datetime(spele["menesis"], spele["diena"])))
         # spele["timestamp"] = datetime.date(spele["menesis"], spele["diena"], spele["laiks"])
@@ -72,7 +73,7 @@ def info(datne):
         spele["arena"] = tags
         spele["arena"] = str(spele["arena"])
         spele["arena"] = spele["arena"][22:- 7]
-        #print(spele["arena"])
+        print("Spēles arēna: " + spele["arena"])
 
         tags = row.find_all("a")
         if not tags:
@@ -81,7 +82,36 @@ def info(datne):
         spele["klubs1"] = str(spele["klubs1"])
         sub_str = ">"
         spele["klubs1"] = spele["klubs1"][spele["klubs1"].index(sub_str) + len(sub_str):- 4]
-        #print(spele["klubs1"])
+        print("Pirmā kluba nosaukums: " + spele["klubs1"])
+
+        tags = row.find_all("span", class_="res1")
+        if not tags:
+            continue
+        spele["rezultars1"] = tags
+        spele["rezultars1"] = str(spele["rezultars1"])
+        sub_str = ">"
+        spele["rezultars1"] = spele["rezultars1"][20:- 8]
+        print("Pirmā kluba rezultāts: " + spele["rezultars1"])
+
+        tags = row.find_all("span", class_="res2")
+        if not tags:
+            continue
+        spele["rezultars2"] = tags
+        spele["rezultars2"] = str(spele["rezultars2"])
+        sub_str = ">"
+        spele["rezultars2"] = spele["rezultars2"][20:- 8]
+        print("Otrā kluba rezultāts: " + spele["rezultars2"])
+
+
+        tags = row.find_all("a")
+        if not tags:
+            continue
+        spele["klubs2"] = tags[1]
+        spele["klubs2"] = str(spele["klubs2"])
+        sub_str = ">"
+        spele["klubs2"] = spele["klubs2"][spele["klubs2"].index(sub_str) + len(sub_str):- 4]
+        print("Otrā kluba nosaukums: " + spele["klubs2"])
         
+        print("-------------------------------")        
 
 info(f"lapas/1_lapa.html")
