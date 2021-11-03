@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup as bs
 import datetime as dt
 import json
+import csv
 
 URL = "https://lff.lv/sacensibas/viriesi/optibet-virsliga/"
 LAPAS = "lapas/"
@@ -80,7 +81,7 @@ def info(datne):
         spele["diena"] = int(spele["diena"])
         #Time stamp ---------------------------------------------------------------
         spele["timestamp"] = str(dt.datetime.combine(dt.date(spele["gads"], spele["menesis"], spele["diena"]), dt.time(spele["stunda"], spele["minutes"])))
-        print("Timesamp: ", end =""), print(spele["timestamp"])
+        print("Timestamp: ", end =""), print(spele["timestamp"])
         #Atrod arenu --------------------------------------------------------------
         tags = row.find("div", class_="stadium")
         if not tags:
@@ -135,5 +136,22 @@ def info(datne):
         dati.append(speles_dati)
     return dati
 
-with open("speles_dati.json", "w") as outfile:
+with open("speles_dati.json", "w", encoding='UTF-8') as outfile:
     json.dump(info(f"lapas/1_lapa.html"), outfile)
+
+def saglabat_datus(dati):
+    with open(f"{DATI}speles_dati.csv", 'w', encoding='UTF-8', newline="") as f:
+        kolonu_nosaukumi = ["timestamp", "arena", "klubs1", "rezultars1", "klubs2", "rezultars2"]
+        w = csv.DictWriter(f, fieldnames= kolonu_nosaukumi)
+        w.writeheader()
+        for speles in dati:
+            w.writerow(speles)
+
+
+def izvilkt_datus():
+    visi_dati = []
+    datne = f"{LAPAS}1_lapa.html"
+    datnes_dati = info(datne)
+    visi_dati += datnes_dati
+    saglabat_datus(visi_dati)
+izvilkt_datus()
