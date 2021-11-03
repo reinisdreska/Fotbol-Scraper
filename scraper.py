@@ -99,7 +99,12 @@ def info(datne):
         spele["klubs2"] = tags[1]
         spele["klubs2"] = spele["klubs2"].text
         print("Otrā kluba nosaukums: " + spele["klubs2"])
-        
-        print("-------------------------------")
+
+        tags = row.find_all("a")
+        spele["klubs2links"] = tags
+        for tag in spele["klubs2links"]:
+            print("Koamndu links https://lff.lv/"+tag["href"])
+
+        print("-------------------------------")    
 
 info(f"lapas/1_lapa.html")
