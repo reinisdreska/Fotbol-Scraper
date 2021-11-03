@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup as bs
 import datetime as dt
+import json
 
 URL = "https://lff.lv/sacensibas/viriesi/optibet-virsliga/"
 LAPAS = "lapas/"
@@ -126,3 +127,4 @@ def info(datne):
         print("-------------------------------")    
 
 info(f"lapas/1_lapa.html")
+#spele["timestamp"], spele["arena"], spele["klubs1"], spele["rezultars1"], spele["rezultars2"], spele["klubs2"]
