@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup as bs
 import datetime as dt
+import json
 
 URL = "https://lff.lv/sacensibas/viriesi/optibet-virsliga/"
 LAPAS = "lapas/"
@@ -78,9 +79,7 @@ def info(datne):
         spele["menesis"] = int(spele["menesis"])
         spele["diena"] = int(spele["diena"])
         #Time stamp ---------------------------------------------------------------
-        spele["date"] = dt.date(spele["gads"], spele["menesis"], spele["diena"])
-        spele["time"] = dt.time(spele["stunda"], spele["minutes"])
-        spele["timestamp"] = dt.datetime.combine(spele["date"], spele["time"])
+        spele["timestamp"] = str(dt.datetime.combine(dt.date(spele["gads"], spele["menesis"], spele["diena"]), dt.time(spele["stunda"], spele["minutes"])))
         print("Timesamp: ", end =""), print(spele["timestamp"])
         #Atrod arenu --------------------------------------------------------------
         tags = row.find("div", class_="stadium")
@@ -124,9 +123,17 @@ def info(datne):
             print("Koamndu links: https://lff.lv/"+tag["href"])
 
         print("-------------------------------")    
+        
+        speles_dati = {}
+        speles_dati["timestamp"] = spele["timestamp"]
+        speles_dati["arena"] = spele["arena"]
+        speles_dati["klubs1"] = spele["klubs1"]
+        speles_dati["rezultars1"] = spele["rezultars1"]
+        speles_dati["rezultars2"] = spele["rezultars2"]
+        speles_dati["klubs2"] = spele["klubs2"]
 
-        dati.append(spele)
+        dati.append(speles_dati)
     return dati
 
-info(f"lapas/1_lapa.html")
-#spele["timestamp"], spele["arena"], spele["klubs1"], spele["rezultars1"], spele["rezultars2"], spele["klubs2"]
+with open("speles_dati.json", "w") as outfile:
+    json.dump(info(f"lapas/1_lapa.html"), outfile)
